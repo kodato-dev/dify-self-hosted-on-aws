@@ -409,6 +409,7 @@ export class ApiService extends Construct {
           'bedrock:Retrieve',
           'bedrock:RetrieveAndGenerate',
           'aws-marketplace:ViewSubscriptions',
+          'aws-marketplace:Subscribe',
         ],
         resources: ['*'],
       }),
