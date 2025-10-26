@@ -280,7 +280,7 @@ export class ApiService extends Construct {
         : ecs.ContainerImage.fromRegistry(`langgenius/dify-sandbox:${props.sandboxImageTag}`),
       environment: {
         GIN_MODE: 'release',
-        WORKER_TIMEOUT: '15',
+        WORKER_TIMEOUT: '180',
         ENABLE_NETWORK: 'true',
         ...(props.allowAnySyscalls
           ? {
