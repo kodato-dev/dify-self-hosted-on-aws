@@ -401,12 +401,15 @@ export class ApiService extends Construct {
     taskDefinition.taskRole.addToPrincipalPolicy(
       new PolicyStatement({
         actions: [
+          'bedrock:GetInferenceProfile',
           'bedrock:InvokeModel',
           'bedrock:InvokeModelWithResponseStream',
           'bedrock:ListFoundationModels',
           'bedrock:Rerank',
           'bedrock:Retrieve',
           'bedrock:RetrieveAndGenerate',
+          'aws-marketplace:ViewSubscriptions',
+          'aws-marketplace:Subscribe',
         ],
         resources: ['*'],
       }),
@@ -458,12 +461,8 @@ export class ApiService extends Construct {
       }),
     });
 
-    new CfnOutput(Stack.of(this), 'ConsoleListTasksCommand', {
-      value: `aws ecs list-tasks --region ${Stack.of(this).region} --cluster ${cluster.clusterName} --service-name ${service.serviceName} --desired-status RUNNING`,
-    });
-
     new CfnOutput(Stack.of(this), 'ConsoleConnectToTaskCommand', {
-      value: `aws ecs execute-command --region ${Stack.of(this).region} --cluster ${cluster.clusterName} --container Main --interactive --command "bash" --task TASK_ID`,
+      value: `aws ecs execute-command --region ${Stack.of(this).region} --cluster ${cluster.clusterName} --container Main --interactive --command "bash" --task $(aws ecs list-tasks --region ${Stack.of(this).region} --cluster ${cluster.clusterName} --service-name ${service.serviceName} --desired-status RUNNING --query 'taskArns[0]' --output text)`,
     });
   }
 }
