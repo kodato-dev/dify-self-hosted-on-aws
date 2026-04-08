@@ -1,0 +1,16 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  claude:
+    if: contains(github.event.comment.body, '@claude')
+    uses: kodato-dev/ai-master-project/.github/workflows/claude-interactive-reusable.yml@main
+    secrets: inherit

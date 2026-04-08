@@ -1,0 +1,14 @@
+name: Claude Auto Review
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    uses: kodato-dev/ai-master-project/.github/workflows/claude-auto-review-reusable.yml@main
+    secrets: inherit
