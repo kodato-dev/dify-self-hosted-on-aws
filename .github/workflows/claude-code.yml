@@ -12,5 +12,11 @@ permissions:
 jobs:
   claude:
     if: contains(github.event.comment.body, '@claude')
-    uses: kodato-dev/ai-master-project/.github/workflows/claude-interactive-reusable.yml@main
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

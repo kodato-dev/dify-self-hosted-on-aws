@@ -10,5 +10,40 @@ permissions:
 
 jobs:
   review:
-    uses: kodato-dev/ai-master-project/.github/workflows/claude-auto-review-reusable.yml@main
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            この pull request をレビューしてください。対象はこの PR だけです。
+
+            PR 情報:
+            - owner: ${{ github.repository_owner }}
+            - repo: ${{ github.event.repository.name }}
+            - pullNumber: ${{ github.event.pull_request.number }}
+
+            必須ルール:
+            - ユーザーに質問しない
+            - Bash を使わない
+            - GitHub MCP ツールだけを使う
+            - 他の PR を探さない
+            - `mcp__github__list_pull_requests` は使わない
+            - `mcp__github__get_pull_request` は owner/repo/pullNumber を上記の値で使う
+            - `mcp__github__get_pull_request_diff` も同じ owner/repo/pullNumber を使う
+            - 行単位の指摘は必ず `mcp__github_inline_comment__create_inline_comment` で投稿する
+            - 問題がない場合はインラインコメントを投稿しない
+            - 最後に 1-3 文の短い総評を返す
+
+            レビュー観点:
+            - バグ・挙動不良
+            - 権限/セキュリティ
+            - CI や運用上の事故要因
+            - 保守性
+          claude_args: >-
+            --allowedTools mcp__github_inline_comment__create_inline_comment,mcp__github__get_pull_request,mcp__github__get_pull_request_diff
