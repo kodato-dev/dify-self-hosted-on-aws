@@ -2119,7 +2119,7 @@ exports[`Snapshot test 1`] = `
             ],
           },
         ],
-        "Cpu": "1024",
+        "Cpu": "2048",
         "ExecutionRoleArn": {
           "Fn::GetAtt": [
             "ApiServiceTaskExecutionRoleFE812553",
@@ -2127,7 +2127,7 @@ exports[`Snapshot test 1`] = `
           ],
         },
         "Family": "TestStackApiServiceTaskBFA8CBF7",
-        "Memory": "2048",
+        "Memory": "4096",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": [
           "FARGATE",
@@ -3018,7 +3018,7 @@ exports[`Snapshot test 1`] = `
           ],
         },
         "AutomaticFailoverEnabled": true,
-        "CacheNodeType": "cache.t4g.micro",
+        "CacheNodeType": "cache.t4g.small",
         "CacheParameterGroupName": "default.valkey8",
         "CacheSubnetGroupName": {
           "Ref": "RedisSubnetGroup2387CBFF",
